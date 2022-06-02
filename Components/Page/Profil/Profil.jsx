@@ -1,5 +1,4 @@
-//import liraries
-import React, { Component, useContext } from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
@@ -10,73 +9,85 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons";
+
 import { UserContext } from "../../../Contexts/UserContext";
 import { STYLES_VARIABLES } from "../../../Variables/stylesVariables";
+import defaultAvatar from "../../../assets/default-Profil-avatar.png";
 
 // create a component
-const Profil = () => {
+const Profil = ({ route, navigation }) => {
+  console.log(navigation);
   const { user, setUser } = useContext(UserContext);
-  console.log(user);
+  // console.log(user);
+
+  const sizes = useWindowDimensions();
+  // console.log(sizes);
 
   function addDescription(description) {
     setUser({ ...user, description: description });
   }
 
-  const sizes = useWindowDimensions();
-  console.log(sizes);
+  async function pickImage() {
+    let image = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 1,
+    });
+    // console.log(image);
+    if (!image.cancelled) setUser({ ...user, avatar: image });
+  }
+
+  function goCamera() {
+    navigation.push("camera");
+  }
 
   return (
     <View style={{ width: "100%" }}>
       <View>
         <Image
-          style={[
-            styles.image,
-            {
-              width: sizes.width,
-              height: sizes.width,
-            },
-          ]}
-          source={{
-            uri: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-          }}
+          style={[styles.image, { width: sizes.width, height: sizes.width }]}
+          source={user.avatar ? user.avatar : defaultAvatar}
         />
-      </View>
 
-      <View style={{styles.iconsContainer}}>
-        <TouchableOpacity>
-          <MaterialIcons
-            name="photo-library"
-            size={50}
-            color={STYLES_VARIABLES.PRIMARY_COLOR}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <MaterialIcons
-            name="photo-camera"
-            size={50}
-            color={STYLES_VARIABLES.PRIMARY_COLOR}
-          />
-        </TouchableOpacity>
+        <View style={styles.iconsContainer}>
+          <TouchableOpacity onPress={pickImage}>
+            <MaterialIcons
+              name="photo-library"
+              size={50}
+              color={STYLES_VARIABLES.PRIMARY_COLOR}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={goCamera}>
+            <MaterialIcons
+              name="photo-camera"
+              size={50}
+              color={STYLES_VARIABLES.PRIMARY_COLOR}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.infosGlobalContainer}>
         <View style={styles.infoContainer}>
-          <Text style={styles.label}>Email:</Text>
-          <Text style={styles.input}>{user.email}</Text>
+          <Text style={styles.personalInfoLabel}>Email:</Text>
+          <Text style={styles.personalInfo}>{user.email}</Text>
         </View>
+
         <View style={styles.infoContainer}>
-          <Text style={styles.label}>Username:</Text>
-          <Text style={styles.input}>{user.username}</Text>
+          <Text style={styles.personalInfoLabel}>Username:</Text>
+          <Text style={styles.personalInfo}>{user.username}</Text>
         </View>
+
         <View style={styles.infoContainer}>
-          <Text style={styles.label}>Description:</Text>
+          <Text style={styles.personalInfoLabel}>Description:</Text>
           <TextInput
-            style={styles.input}
+            style={styles.personalInfo}
             placeholder="Veuillez entrer une description"
             value={user.description}
             onChangeText={addDescription}
-          ></TextInput>
+          />
         </View>
       </View>
     </View>
@@ -86,43 +97,48 @@ const Profil = () => {
 // define your styles
 const styles = StyleSheet.create({
   image: {
-    maxheight: 200,
-    maxwidth: 200,
     alignSelf: "center",
-    margin: 20,
+    margin: 24,
+    maxWidth: 250,
+    maxHeight: 250,
+    borderRadius: 125,
   },
   iconsContainer: {
     display: "flex",
     flexDirection: "row",
     backgroundColor: STYLES_VARIABLES.GRAY_COLOR,
     maxWidth: 300,
-    alignSelf
+    alignSelf: "center",
+    width: "100%",
+    justifyContent: "space-around",
+    padding: 5,
+    margin: 10,
+    borderRadius: 10,
   },
   infosGlobalContainer: {
+    backgroundColor: STYLES_VARIABLES.GRAY_COLOR,
+    padding: 20,
+    borderBottomWidth: 2,
+    borderTopWidth: 2,
+    borderColor: STYLES_VARIABLES.PRIMARY_COLOR,
     width: "100%",
     maxWidth: 300,
     alignSelf: "center",
-    backgroundColor: STYLES_VARIABLES.GRAY_COLOR,
-    padding: 24,
-    borderBottomWidth: 3,
-    borderTopWidth: 3,
-    borderColor: STYLES_VARIABLES.DARK_GRAY_COLOR,
   },
   infoContainer: {
-    backgroundColor: STYLES_VARIABLES.GRAY_COLOR,
-    padding: 8,
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
     borderColor: STYLES_VARIABLES.DARK_GRAY_COLOR,
+    padding: 5,
+    margin: 5,
   },
-  label: {
+  personalInfoLabel: {
     color: STYLES_VARIABLES.PRIMARY_COLOR,
     fontWeight: "bold",
   },
-  input: {
-    fontSize: 17,
+  personalInfo: {
+    fontSize: 16,
     color: STYLES_VARIABLES.DARK_COLOR,
   },
 });
 
-//make this component available to the app
 export default Profil;

@@ -1,24 +1,19 @@
-//import liraries
 import { useContext, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import { View } from "react-native";
+
+// import { AntDesign } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+
 import { STYLES_VARIABLES } from "../../../Variables/stylesVariables";
 import Button from "../../UI/Buttons/ButtonBootstrap/ButtonBootstrap";
-import ButtonLink from "../../UI/Buttons/ButtonLink/ButtonLink";
 import InputWithError from "../../UI/Texts/InputWithError/InputWithError";
+
 import { UserContext } from "../../../Contexts/UserContext";
 
-// create a component
 const Signup = () => {
   const userContext = useContext(UserContext);
   const { user, setUser } = userContext;
-  console.log(userContext);
+  // console.log(userContext);
 
   //1-creation variable d'état
   const [usernameInput, setUsernameInput] = useState("");
@@ -38,15 +33,19 @@ const Signup = () => {
     switch (field) {
       case "username":
         setUsernameInput(text);
+        setUsernameError("");
         break;
       case "email":
         setEmailInput(text);
+        setEmailError("");
         break;
       case "password":
         setPasswordInput(text);
+        setPasswordError("");
         break;
       case "passwordBis":
         setPasswordBisInput(text);
+        setPasswordBisError("");
         break;
     }
   };
@@ -142,8 +141,8 @@ const Signup = () => {
         isPassword
       />
       <Button label="S'Inscrire" action={signup}>
-        <AntDesign
-          name="login"
+        <FontAwesome
+          name="sign-in"
           size={20}
           color={STYLES_VARIABLES.LIGHT_COLOR}
         />
