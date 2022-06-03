@@ -8,6 +8,7 @@ import Auth from './Components/Page/Auth/Auth';
 import Profil from './Components/Page/Profil/Profil';
 import { UserContext } from './Contexts/UserContext';
 import ProfilStack from "./Components/Stacks/ProfilStack/ProfilStack";
+// import GlobalDrawer from "./Components/UI/Drawer/GlobalDrawer";
 
 export default function App() {
   const fakeUser = { email: "monEmail@email.em", username: "NOMPrenom" };
