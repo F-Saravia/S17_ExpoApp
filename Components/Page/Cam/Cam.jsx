@@ -1,4 +1,3 @@
-//import liraries
 import {
   View,
   Text,
@@ -10,6 +9,7 @@ import {
 
 import { useContext, useEffect, useRef, useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { Camera, CameraType } from "expo-camera";
 
 import { STYLES_VARIABLES } from "../../../Variables/stylesVariables";
@@ -20,20 +20,27 @@ const Cam = ({ route, navigation }) => {
   const { user, setUser } = useContext(UserContext);
   const sizes = useWindowDimensions();
   const [cameraPermission, setCameraPermission] = useState(null);
+  const [cameraActivation, setCameraActivation] = useState(false);
   const [cameraType, setCameraType] = useState(CameraType.back);
   const [flashType, setFlashType] = useState(false);
   const cameraRef = useRef();
+
+  function togglePermission() {
+    //TODO acces the permissions on the device to remove it
+    //just switching state variable doesnt modify the os permission itself....so.....mmm...
+    //i'll just toggle state variable for now...........
+    setCameraPermission(!cameraPermission);
+  }
+
+  function toggleCameraActivation() {
+    setCameraActivation(!cameraActivation);
+  }
 
   function toggleCameraType() {
     setCameraType(
       cameraType === CameraType.back ? CameraType.front : CameraType.back
     );
   }
-
-  function togglePermission() {
-    setCameraPermission();
-  }
-
   function toggleFlash() {
     setFlashType(!flashType);
   }
@@ -77,6 +84,16 @@ const Cam = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.iconsContainer}>
+        <TouchableOpacity onPress={toggleCameraActivation}>
+          <Feather
+            name={cameraActivation ? "camera" : "camera-off"}
+            size={24}
+            color={cameraActivation ? "camera" : "camera-off"}
+          />
+        </TouchableOpacity>
+      </View>
+      (cameraActivation &&{" "}
       <Camera
         ref={cameraRef}
         flashMode={flashType ? "torch" : "off"}
@@ -119,6 +136,7 @@ const Cam = ({ route, navigation }) => {
           </TouchableOpacity>
         </View>
       </Camera>
+      )
     </View>
   );
 };
