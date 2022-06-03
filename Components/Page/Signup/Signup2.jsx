@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { STYLES_VARIABLES } from "../../../Variables/stylesVariables";
@@ -225,7 +226,7 @@ const Signup = () => {
   //4-mettre enplace les composants et les lier avec les variables et les fonctions
 
   return (
-    <View>
+    <ScrollView>
       {/* <Text> login page</Text> */}
       <InputWithError
         holder="e-Mail"
@@ -264,7 +265,7 @@ const Signup = () => {
           color={STYLES_VARIABLES.LIGHT_COLOR}
         />
       </Button>
-    </View>
+    </ScrollView>
   );
 };
 

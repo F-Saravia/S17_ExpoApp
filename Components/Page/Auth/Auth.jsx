@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
 import Login from "../../Page/Login/Login";
 import Signup from "../../Page/Signup/Signup";
@@ -12,7 +12,7 @@ export default function Auth() {
   const toggleIsLogin = () => setIsLogin(!isLogin);
 
   return (
-    <View>
+    <ScrollView>
       {/* <Text> Auth page</Text> */}
       <Card
         title="Bienvenue"
@@ -26,6 +26,6 @@ export default function Auth() {
             : "Deja membre? Connectez-vous!"}
         </ButtonLink>
       </Card>
-    </View>
+    </ScrollView>
   );
 }

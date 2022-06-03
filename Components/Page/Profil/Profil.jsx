@@ -6,6 +6,7 @@ import {
   Image,
   useWindowDimensions,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
@@ -44,7 +45,7 @@ const Profil = ({ route, navigation }) => {
   }
 
   return (
-    <View style={{ width: "100%" }}>
+    <ScrollView style={{ width: "100%" }}>
       <View>
         <Image
           style={[styles.image, { width: sizes.width, height: sizes.width }]}
@@ -95,7 +96,7 @@ const Profil = ({ route, navigation }) => {
           />
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

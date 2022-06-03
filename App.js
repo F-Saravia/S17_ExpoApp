@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import SayHello from './Components/Container/SaySomething/SayHello';
 import Auth from './Components/Page/Auth/Auth';
@@ -16,13 +16,13 @@ export default function App() {
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <NavigationContainer>
           {user ? <ProfilStack /> : <Auth />}
         </NavigationContainer>
 
         <StatusBar style='auto' />
-      </View>
+      </ScrollView>
     </UserContext.Provider>
   );
 }

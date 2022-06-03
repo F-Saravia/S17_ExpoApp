@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   useWindowDimensions,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 
 import { useContext, useEffect, useRef, useState } from "react";
@@ -87,7 +88,7 @@ const Cam = ({ route, navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Camera
         zoom={zoom}
         ref={cameraRef}
@@ -138,7 +139,7 @@ const Cam = ({ route, navigation }) => {
           </TouchableOpacity>
         </View>
       </Camera>
-    </View>
+    </ScrollView>
   );
 };
 

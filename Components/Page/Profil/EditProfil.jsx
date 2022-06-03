@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 
 import Button from "../../UI/Buttons/ButtonBootstrap/ButtonBootstrap";
 import InputWithError from "../../UI/Texts/InputWithError/InputWithError";
@@ -80,7 +80,7 @@ const EditProfil = () => {
 
   //4-mettre en place les composants en place et les lier avec les variables et les fonctions
   return (
-    <View>
+    <ScrollView>
       <InputWithError
         holder={user.email}
         value={emailUpdate}
@@ -107,7 +107,7 @@ const EditProfil = () => {
         type="default"
       />
       <Button label="Enregistrer" action={enregistrer} />
-    </View>
+    </ScrollView>
   );
 };
 

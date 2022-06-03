@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 
 // import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
@@ -108,7 +108,7 @@ const Signup = () => {
 
   //4-mettre en place les composants en place et les lier avec les variables et les fonctions
   return (
-    <View>
+    <ScrollView>
       {/* <Text> login page</Text> */}
       <InputWithError
         holder="e-Mail"
@@ -147,7 +147,7 @@ const Signup = () => {
           color={STYLES_VARIABLES.LIGHT_COLOR}
         />
       </Button>
-    </View>
+    </ScrollView>
   );
 };
 
