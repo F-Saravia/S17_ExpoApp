@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   Image,
   useWindowDimensions,
   TouchableOpacity,
@@ -14,6 +13,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 import { UserContext } from "../../../Contexts/UserContext";
 import { STYLES_VARIABLES } from "../../../Variables/stylesVariables";
+import Button from "../../UI/Buttons/ButtonBootstrap/ButtonBootstrap";
 import defaultAvatar from "../../../assets/default-Profil-avatar.png";
 
 // create a component
@@ -25,9 +25,9 @@ const Profil = ({ route, navigation }) => {
   const sizes = useWindowDimensions();
   // console.log(sizes);
 
-  function addDescription(description) {
-    setUser({ ...user, description: description });
-  }
+  // function addDescription(description) {
+  //   setUser({ ...user, description: description });
+  // }
 
   async function pickImage() {
     let image = await ImagePicker.launchImageLibraryAsync({
@@ -82,11 +82,16 @@ const Profil = ({ route, navigation }) => {
 
         <View style={styles.infoContainer}>
           <Text style={styles.personalInfoLabel}>Description:</Text>
-          <TextInput
-            style={styles.personalInfo}
-            placeholder="Veuillez entrer une description"
-            value={user.description}
-            onChangeText={addDescription}
+          <Text style={styles.personalInfo}>
+            {user.description
+              ? user.description
+              : "Veuillez entrer une description..."}
+          </Text>
+          <Button
+            label="Modifiez votre profil"
+            action={() => {
+              navigation.push("edit-profil");
+            }}
           />
         </View>
       </View>

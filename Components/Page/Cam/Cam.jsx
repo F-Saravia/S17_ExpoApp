@@ -9,20 +9,22 @@ import {
 } from "react-native";
 
 import { useContext, useEffect, useRef, useState } from "react";
-import { MaterialIcons } from "@expo/vector-icons";
 import { Camera, CameraType } from "expo-camera";
+import { MaterialIcons } from "@expo/vector-icons";
+import Slider from "@react-native-community/slider";
 
 import { STYLES_VARIABLES } from "../../../Variables/stylesVariables";
 import { UserContext } from "../../../Contexts/UserContext";
 
 // create a component
 const Cam = ({ route, navigation }) => {
-  const { user, setUser } = useContext(UserContext);
-  const sizes = useWindowDimensions();
   const [cameraPermission, setCameraPermission] = useState(null);
   const [cameraType, setCameraType] = useState(CameraType.back);
-  const [flashType, setFlashType] = useState(false);
+  const [isFlashOn, setIsFlashOn] = useState(false);
+  const [zoom, setZoom] = useState(0);
   const cameraRef = useRef();
+
+  const { user, setUser } = useContext(UserContext);
 
   function toggleCameraType() {
     setCameraType(
@@ -30,33 +32,30 @@ const Cam = ({ route, navigation }) => {
     );
   }
 
-  function togglePermission() {
-    setCameraPermission();
-  }
-
   function toggleFlash() {
-    setFlashType(!flashType);
+    setIsFlashOn(!isFlashOn);
   }
 
-  async function takePicture() {
-    // console.log(cameraRef);
-    // const ratios = await cameraRef.current.getSupportedRatiosAsync();
-    // console.log(ratios);
-    const photo = cameraRef.current.takePictureAsync();
-    setUser({ ...user, avatar: photo });
-    if (navigation.canGoBack()) navigation.pop();
+  function handleZoom(value) {
+    setZoom(value);
   }
+
+  const sizes = useWindowDimensions();
 
   useEffect(() => {
     (async () => {
-      let permission = await Camera.requestCameraPermissionsAsync();
-      setCameraPermission(permission.granted);
+      try {
+        let permission = await Camera.requestCameraPermissionsAsync();
+        setCameraPermission(permission.granted);
+      } catch (err) {
+        console.log(err);
+      }
     })();
   }, []);
 
   if (cameraPermission === null) {
     return (
-      <View style={{ height: "100%", justifyContent: "center" }}>
+      <View style={styles.container}>
         <ActivityIndicator size={64} color={STYLES_VARIABLES.PRIMARY_COLOR} />
       </View>
     );
@@ -75,20 +74,40 @@ const Cam = ({ route, navigation }) => {
     );
   }
 
+  async function takePicture() {
+    const picture = await cameraRef.current.takePictureAsync();
+    console.log(picture);
+
+    //1- Utiliser le contexte pour mettre picture dans avatar de user.
+    setUser({ ...user, avatar: picture });
+    //2- Retourner en arriere (Profil)
+    if (navigation.canGoBack()) {
+      navigation.pop();
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Camera
+        zoom={zoom}
         ref={cameraRef}
-        flashMode={flashType ? "torch" : "off"}
+        flashMode={isFlashOn ? "torch" : "off"}
         type={cameraType}
         ratio="16:9"
-        style={{
-          // width: "100%",
-          // height: "50%",
-          width: sizes.width,
-          height: sizes.height,
-        }}
+        style={{ width: sizes.width, height: (sizes.width * 16) / 9 }}
       >
+        <Slider
+          style={styles.slider}
+          vertical={true}
+          value={zoom}
+          onValueChange={handleZoom}
+          minimumValue={0}
+          maximumValue={1}
+          onSlidingComplete={handleZoom}
+          maximumTrackTintColor={STYLES_VARIABLES.LIGHT_COLOR}
+          minimumTrackTintColor={STYLES_VARIABLES.PRIMARY_COLOR}
+          thumbTintColor={STYLES_VARIABLES.SECONDARY_COLOR}
+        />
         <View style={styles.iconsContainer}>
           <TouchableOpacity onPress={toggleCameraType}>
             <MaterialIcons
@@ -100,10 +119,10 @@ const Cam = ({ route, navigation }) => {
 
           <TouchableOpacity onPress={toggleFlash}>
             <MaterialIcons
-              name={flashType ? "flash-on" : "flash-off"}
-              size={45}
+              name={isFlashOn ? "flash-on" : "flash-off"}
+              size={50}
               color={
-                flashType
+                isFlashOn
                   ? STYLES_VARIABLES.SUCCESS_COLOR
                   : STYLES_VARIABLES.DANGER_COLOR
               }
@@ -125,10 +144,9 @@ const Cam = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: "100%",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#2c3e50",
   },
   iconsContainer: {
     display: "flex",
@@ -141,6 +159,12 @@ const styles = StyleSheet.create({
     bottom: 100,
     borderRadius: 500,
     padding: 10,
+  },
+  slider: {
+    width: "75%",
+    alignSelf: "center",
+    position: "absolute",
+    bottom: 200,
   },
 });
 
