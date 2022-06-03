@@ -96,10 +96,14 @@ const EditProfil = () => {
         type="default"
       />
       <InputWithError
-        holder={user.description}
+        holder={
+          user.description
+            ? user.description
+            : "Veuillez saisir une description"
+        }
         value={descriptionUpdate}
         action={handleFieldForm("description")}
-        errorMessage={descriptionError}
+        errorMessage=""
         type="default"
       />
       <Button label="Enregistrer" action={enregistrer} />
@@ -115,5 +119,4 @@ function isUndefinedOrBlank(monString) {
     : true;
 }
 
-//make this component available to the app
 export default EditProfil;
