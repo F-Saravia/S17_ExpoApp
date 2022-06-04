@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: EPERM: operation not permitted, rmdir 'D:\Bibliotheques\Texte\Estudios\Con_Dev_App\Notes\S17_J81-J85_ReactNative\S17_F-Saravia\J81_FirstExpoApp\FirstExpoApp\node_modules\@miblanchard\react-native-slider\lib\stories'
+  Error: EPERM: operation not permitted, rmdir 'D:\Bibliotheques\Texte\Estudios\Con_Dev_App\Notes\S17_J81-J85_ReactNative\S17_F-Saravia\J81_FirstExpoApp\FirstExpoApp\node_modules\axios\dist'
 
 npm manifest: 
   {

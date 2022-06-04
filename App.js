@@ -8,7 +8,7 @@ import Auth from './Components/Page/Auth/Auth';
 import Profil from './Components/Page/Profil/Profil';
 import { UserContext } from './Contexts/UserContext';
 import ProfilStack from "./Components/Stacks/ProfilStack/ProfilStack";
-// import GlobalDrawer from "./Components/UI/Drawer/GlobalDrawer";
+import GlobalDrawer from "./Components/Container/Drawer/GlobalDrawer";
 
 export default function App() {
   const fakeUser = { email: "monEmail@email.em", username: "NOMPrenom" };
@@ -16,13 +16,13 @@ export default function App() {
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <NavigationContainer>
-          {user ? <ProfilStack /> : <Auth />}
+          {user ? <GlobalDrawer /> : <Auth />}
         </NavigationContainer>
 
         <StatusBar style='auto' />
-      </ScrollView>
+      </View>
     </UserContext.Provider>
   );
 }
@@ -32,5 +32,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     justifyContent: "center",
+    width: "100%"
   },
 });
